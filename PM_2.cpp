@@ -30,10 +30,12 @@ bool is_double(const std::string& str)
     }
     catch (const std::invalid_argument& err)
     {
+        std::cout << "ERROR: " << err.what() << std::endl;
         result = false;
     }
     catch (const std::out_of_range& err)
     {
+        std::cout << "ERROR: " << err.what() << std::endl;
         result = false;
     }
     return result;
