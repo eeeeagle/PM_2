@@ -39,9 +39,11 @@ bool is_double(const std::string& str)
     return result;
 }
 
-bool is_operation(const char& in)
+bool is_operation(const std::string& str)
 {
-    return (in == '+' || in == '-' || in == '*' || in == '/');
+    if (str.size() != 1)
+        return false;
+    return (str[0] == '+' || str[0] == '-' || str[0] == '*' || str[0] == '/');
 }
 
 int main()
@@ -53,28 +55,23 @@ int main()
     {
         try
         {
-            
             getline(std::cin, input);
 
             if (input == "q" || input == "Q" || input == "exit")
-            {
-                if (!values.empty())
-                    std::cout << "Result = " << values.top() << std::endl;
                 return 0;
-            }
 
             if (is_double(input))
             {
                 values.push(std::stod(input));
                 std::cout << "Added to values stack: " << values.top() << std::endl;
             }
-            else if (is_operation(input[0]) && input.size() == 1)
+            else if (is_operation(input))
             {
-                char operand = input[0];
-                std::cout << "Added operation: " << operand << std::endl;
-
                 if (values.size() < 2)
                     throw std::logic_error("Stack of values contains less than 2 values");
+
+                char operand = input[0];
+                std::cout << "Added operation: " << operand << std::endl;
 
                 double second = values.top();
                 values.pop();
@@ -89,11 +86,7 @@ int main()
             else
                 throw std::invalid_argument("Invalid input. Try again.");
         }
-        catch (std::invalid_argument& err)
-        {
-            std::cout << "ERROR: " << err.what() << std::endl;
-        }
-        catch (std::logic_error& err)
+        catch (std::exception& err)
         {
             std::cout << "ERROR: " << err.what() << std::endl;
         }
